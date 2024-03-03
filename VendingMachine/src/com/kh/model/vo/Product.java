@@ -1,10 +1,10 @@
-package VendingMachine;
+package com.kh.model.vo;
 
 public class Product {
 	private String pName; // 제품명
 	private int price; // 금액
-	private int amount; // 남은 개수
-	private boolean lightOn; // 점등 유무(재고가 있을 시)
+	private int amount; // 재고수
+//	private boolean lightOn; // 점등 유무(재고가 있을 시)/
 	
 	
 	public Product() {
@@ -16,7 +16,7 @@ public class Product {
 		this.pName = pName;
 		this.price = price;
 		this.amount = amount;
-		this.lightOn = false;
+//		this.lightOn = false;
 	}
 	
 	public String getpName() {
@@ -26,9 +26,12 @@ public class Product {
 	public void setpName(String pName) {
 		this.pName = pName;
 	}
+	
+	public int getPrice() {
+		return price;
+	}
 
-	public Product(int price) {
-		super();
+	public void setPrice(int price) {
 		this.price = price;
 	}
 
@@ -40,13 +43,13 @@ public class Product {
 		this.amount = amount;
 	}
 
-	public boolean isLightOn() {
-		return lightOn;
-	}
-
-	public void setLightOn(boolean lightOn) {
-		this.lightOn = lightOn;
-	}
+//	public boolean isLightOn() {
+//		return lightOn;
+//	}
+//
+//	public void setLightOn(boolean lightOn) {
+//		this.lightOn = lightOn;
+//	}
 
 	@Override
 	public String toString() {

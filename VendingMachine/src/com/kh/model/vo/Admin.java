@@ -1,9 +1,9 @@
-package VendingMachine;
+package com.kh.model.vo;
 
-public class Administrator {
-	private String password;
+public class Admin extends Human{
+	private String password; //관리자 모드 접속을 위한 비밀번호
 	
-	public Administrator() {
+	public Admin() {
 		password = "123456";
 	}
 

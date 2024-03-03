@@ -1,13 +1,13 @@
-package VendingMachine;
+package com.kh.run;
+
+import com.kh.view.MainView;
 
 public class Run {
 
 	public static void main(String[] args) {
 		
-//		new MainMenu().setCardBudget();
-		new MainMenu().printMenu();
-//		new ProductManagement().printBeverage();
-//		new MainMenu().print_VM_Manager();
+		new MainView().mainMenu();
+
 	}
 
 }
@@ -43,17 +43,16 @@ public class Run {
  * 
  * 
  * 고객 객체
- * - 카드
- *   카드에 있는 금액
- * - 현금
- *   넣은 금액
+ * - customer_ID
+ * - 카드에 있는 금액
+ * 
  *   
- * 음료 객체
+ * 상품(음료) 객체
  * - 제품명(String)
  * - 남은 재고(int)
  * - 가격(int)
  * - 버튼 점등 유무(boolean)
- * - 유통기한(Date or String) : 처음은 모두 25.1.1.로 통일해주고 
+ * 
  * 
  * 
  */
