@@ -13,7 +13,6 @@ import com.kh.model.vo.Product;
 
 
 public class ProductDAO {
-
 	public ArrayList<Product> selectList(Connection conn) { 
 		// select문(여러행 조회) -> resultSet 객체 -> ArrayList<Product>에 담기
 		ArrayList<Product> list = new ArrayList<>(); //비어있는상태

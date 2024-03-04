@@ -56,6 +56,13 @@ public class MainView {
 	
 	public void payCashMenu() { // 현금결제 메뉴창 출력
 		System.out.println();
+		int i = 1;
+		System.out.println("===== 상품 =====");
+		for(Product p : pm.selectList()) {
+			System.out.printf("%d) %s(%d원)\n", i++, p.getpName(), p.getPrice());
+		}
+		
+		System.out.println();
 		System.out.print("현금을 투입해 주세요 : ");
 		int cash = sc.nextInt();
 		sc.nextLine();
@@ -76,7 +83,8 @@ public class MainView {
 			} else break;
 		}
 		
-		int i = 1;
+		System.out.println();
+		i = 1;
 		for(Product p : pm.selectList()) {
 			if(p.getAmount() == 0 || p.getPrice() > cash) { //투입금액보다 낮거나 재고가 없을 경우 구매불가
 				System.out.printf("%d) %s(%d원)(구매불가)\n", i++, p.getpName(), p.getPrice());
@@ -204,7 +212,8 @@ public class MainView {
 			System.out.println("===== 상품 관리 =====");
 			System.out.println("1. 상품 추가");
 			System.out.println("2. 상품 삭제");			
-			System.out.println("3. 상품 정보 변경");
+			System.out.println("3. 상품 재고 보충");
+			System.out.println("4. 상품 가격 변경");
 			System.out.println("9. 관리자 메인메뉴로 돌아갑니다");
 			System.out.print("메뉴를 입력하세요 : ");
 			selectMenu = sc.nextInt();
@@ -221,7 +230,11 @@ public class MainView {
 				break;
 				
 			case 3:
-				this.productInfoUpdateMenu();
+				this.productRefill();
+				break;
+
+			case 4:
+				this.priceUpdate();
 				break;
 			
 			case 9:
@@ -273,28 +286,6 @@ public class MainView {
 		}
 		System.out.println("삭제 실패");
 		
-	}
-	
-	
-	public void productInfoUpdateMenu() {
-		int selectMenu = 0;
-		System.out.println();
-		System.out.println("===== 상품 관리 =====");
-		System.out.println("1. 재고보충");
-		System.out.println("2. 가격 변경");
-		System.out.print("메뉴를 입력하세요 : ");
-		selectMenu = sc.nextInt();
-		sc.nextLine();
-		
-		switch(selectMenu) {
-		case 1:
-			this.productRefill();
-			break;
-
-		case 2:
-			this.priceUpdate();
-			break;
-		}
 	}
 	
 	/**

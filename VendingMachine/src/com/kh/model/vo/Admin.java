@@ -25,8 +25,5 @@ public class Admin extends Human{
 	public void setIncome(int income) {
 		this.income = income;
 	}
-
-
-	
 	
 }
