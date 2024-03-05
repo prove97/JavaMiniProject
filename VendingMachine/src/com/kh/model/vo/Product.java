@@ -2,6 +2,7 @@ package com.kh.model.vo;
 
 public class Product {
 	private String pName; // 제품명
+	private String category; //종류
 	private int price; // 금액
 	private int amount; // 재고수
 //	private boolean lightOn; // 점등 유무(재고가 있을 시)/
@@ -19,6 +20,15 @@ public class Product {
 //		this.lightOn = false;
 	}
 	
+	public Product(String pName, String category, int price, int amount) {
+		super();
+		this.pName = pName;
+		this.category = category;
+		this.price = price;
+		this.amount = amount;
+//		this.lightOn = false;
+	}
+	
 	public String getpName() {
 		return pName;
 	}
@@ -27,6 +37,14 @@ public class Product {
 		this.pName = pName;
 	}
 	
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	public int getPrice() {
 		return price;
 	}
@@ -53,12 +71,8 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "음료명 : " + pName + "\t가격 : " + price + "원\t수량 : " + amount;
+		return "음료명 : " + pName + "\t종류 : " + category + "\t가격 : " + price + "원\t수량 : " + amount;
 	}
-	
-	
-	
-	
 	
 }
 

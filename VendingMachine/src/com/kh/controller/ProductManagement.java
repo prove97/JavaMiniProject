@@ -7,15 +7,9 @@ import com.kh.model.dao.ProductDAO;
 import com.kh.model.vo.Product;
 
 public class ProductManagement {
-	ArrayList<Product> productList = new ArrayList<>();
 	ProductService ps = new ProductService();
-
-	public ProductManagement() {
-		super();
-		productList = ps.selectList();
-		
-	}
-
+	Product p = new Product();
+	
 	public ArrayList<Product> selectList() { //모든 상품 정보 출력(ArrayList로 넘기는 역할)
 		return ps.selectList();
 	}
@@ -26,7 +20,6 @@ public class ProductManagement {
 	public int rollbackProductAmount(String pName) {
 		return ps.rollbackProductAmount(pName);
 	}
-
 	
 	public Product selectProduct(String pName) {
 		return ps.selectProduct(pName);
@@ -36,13 +29,11 @@ public class ProductManagement {
 	
 	public int addProduct(String pName, int price, int amount) {
 		Product p = new Product(pName, price, amount);
-
 		return ps.addProduct(p);
 		
 	}
 	
 	public int deleteProduct(String pName) {
-
 		return ps.deleteProduct(pName);
 		
 	}

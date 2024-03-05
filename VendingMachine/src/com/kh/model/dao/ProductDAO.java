@@ -30,6 +30,7 @@ public class ProductDAO {
 		while(rset.next()) {
 				Product p = new Product();
 				p.setpName(rset.getString("product_name"));
+				p.setCategory(rset.getString("category"));
 				p.setPrice(rset.getInt("price"));
 				p.setAmount(rset.getInt("amount"));
 				
@@ -104,6 +105,7 @@ public class ProductDAO {
 			//6) ResultSet으로부터 데이터를 하나씩 꺼내서 담아준다.
 			if(rset.next()) {
 				p.setpName(rset.getString("product_name"));
+				p.setCategory(rset.getString("category"));
 				p.setPrice(rset.getInt("price"));
 				p.setAmount(rset.getInt("amount"));
 			}
@@ -124,7 +126,7 @@ public class ProductDAO {
 		int result = 0; // 처리된 결과(처리된 행수)를 받아줄 변수
 		PreparedStatement pstmt = null; // 완성된 sql문 전달해서 곧바로 실행 후 결과를 받는 객체
 
-		String sql = "INSERT INTO PRODUCT VALUES(SEQ_USERNO.NEXTVAL, ?, ?, ?)";
+		String sql = "INSERT INTO PRODUCT VALUES(SEQ_USERNO.NEXTVAL, ?, '음료', ?, ?)";
 		
 		
 		try {

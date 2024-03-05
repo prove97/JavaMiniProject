@@ -6,7 +6,7 @@ public class Admin extends Human{
 	
 	public Admin() {
 		super();
-		password = "123456";
+		password = "12345";
 		income = 0;
 	}
 

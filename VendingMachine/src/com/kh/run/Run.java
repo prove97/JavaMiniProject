@@ -51,7 +51,6 @@ public class Run {
  * - 제품명(String)
  * - 남은 재고(int)
  * - 가격(int)
- * - 버튼 점등 유무(boolean)
  * 
  * 
  * 

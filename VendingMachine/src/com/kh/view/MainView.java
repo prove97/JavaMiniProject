@@ -1,20 +1,18 @@
 package com.kh.view;
 
-
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.kh.controller.ProductManagement;
 import com.kh.model.vo.Admin;
+import com.kh.model.vo.Customer;
 import com.kh.model.vo.Product;
 
 public class MainView {
 	Scanner sc = new Scanner(System.in);
 	ProductManagement pm = new ProductManagement();
 	Admin admin = new Admin();
+	Customer cust = new Customer();
 	
 	public void mainMenu() {
 		int selectMenu = 0;
@@ -23,8 +21,8 @@ public class MainView {
 			System.out.println("===== 음료 자판기 =====");
 			System.out.println("1. 현금 계산");
 			System.out.println("2. 카드 계산");
-			System.out.println("8. 관리자 메뉴");
-			System.out.println("9. 종료");
+			System.out.println("9. 관리자 메뉴");
+			System.out.println("0. 종료");
 			System.out.print("메뉴를 입력하세요 : ");
 			selectMenu = sc.nextInt();
 			sc.nextLine();
@@ -38,11 +36,11 @@ public class MainView {
 				this.payCardMenu();
 				break;
 
-			case 8:
+			case 9:
 				this.printAdminMenu();
 				break;
 				
-			case 9:
+			case 0:
 				System.out.println("종료합니다.");
 				sc.close();
 				return;
@@ -55,7 +53,6 @@ public class MainView {
 	}
 	
 	public void payCashMenu() { // 현금결제 메뉴창 출력
-		System.out.println();
 		int i = 1;
 		System.out.println("===== 상품 =====");
 		for(Product p : pm.selectList()) {
@@ -64,20 +61,20 @@ public class MainView {
 		
 		System.out.println();
 		System.out.print("현금을 투입해 주세요 : ");
-		int cash = sc.nextInt();
+		cust.setCash(sc.nextInt());
 		sc.nextLine();
 		
 		boolean isHigher = false;
 		while(true) {
 			for(Product p : pm.selectList()) { 
-				if(p.getPrice() <= cash) { //각 모든 상품들의 가격과 비교, 하나라도 투입 금액보다 더 큰게 있다면 반복문 탈출
+				if(p.getPrice() <= cust.getCash()) { //각 모든 상품들의 가격과 비교, 하나라도 투입 금액보다 더 큰게 있다면 반복문 탈출
 					isHigher = true;
 					break;
 				}		
 			}
 			if(!isHigher) {
-				System.out.print("금액이 모자랍니다. 추가로 투입해 주세요(현재 "+ cash + "원) : "); // 투입금액이 모든 상품의 가격보다 낮다면 추가로 금액을 입력받는다.
-				cash += sc.nextInt();
+				System.out.print("금액이 모자랍니다. 추가로 투입해 주세요(현재 "+ cust.getCash() + "원) : "); // 투입금액이 모든 상품의 가격보다 낮다면 추가로 금액을 입력받는다.
+				cust.setCash(cust.getCash() + sc.nextInt());
 				sc.nextLine();
 				continue;
 			} else break;
@@ -86,7 +83,7 @@ public class MainView {
 		System.out.println();
 		i = 1;
 		for(Product p : pm.selectList()) {
-			if(p.getAmount() == 0 || p.getPrice() > cash) { //투입금액보다 낮거나 재고가 없을 경우 구매불가
+			if(p.getAmount() == 0 || p.getPrice() > cust.getCash()) { //투입금액보다 낮거나 재고가 없을 경우 구매불가
 				System.out.printf("%d) %s(%d원)(구매불가)\n", i++, p.getpName(), p.getPrice());
 			} else if(p.getAmount() != 0) {
 				System.out.printf("%d) %s(%d원)\n", i++, p.getpName(), p.getPrice());
@@ -98,7 +95,7 @@ public class MainView {
 		int buyP;
 		while(true) {
 			System.out.println();
-			System.out.println("현재금액 : " + cash + "원");
+			System.out.println("현재금액 : " + cust.getCash() + "원");
 			System.out.print("구매할 상품(상품명 입력) : ");
 			pName = sc.nextLine();
 			
@@ -116,7 +113,7 @@ public class MainView {
 				continue;
 			}
 			
-			if(pm.selectProduct(pName).getPrice() > cash) { //투입 금액보다 상품의 금액이 더 크다면
+			if(pm.selectProduct(pName).getPrice() > cust.getCash()) { //투입 금액보다 상품의 금액이 더 크다면
 				System.out.println("돈이 부족합니다. 다시 입력해주세요.");
 				pm.rollbackProductAmount(pName);
 				continue;
@@ -127,13 +124,17 @@ public class MainView {
 		
 		System.out.println("구매 완료!");
 		admin.setIncome(admin.getIncome() + pm.selectProduct(pName).getPrice()); //수익 더함
-		System.out.println("거스름돈 : " + (cash - pm.selectProduct(pName).getPrice()) + "원");
+		System.out.println("거스름돈 : " + (cust.getCash() - pm.selectProduct(pName).getPrice()) + "원");
 		
 	}
 	
 	
 	public void payCardMenu() { // 카드결제 메뉴창 출력
 		System.out.println("아직 미구현 상태");
+
+		/*
+		 * 카드 선택 -> 
+		 */
 	}
 	
 	
@@ -142,30 +143,11 @@ public class MainView {
 	//---------------관리자--------------------
 
 	public void printAdminMenu() { // 관리자 메뉴창 출력
-		String inputPassword; 
-		int inputCnt = 0;
-		
-		while(true) {
-			if(inputCnt == 5) { // 5번 틀릴 경우 메인메뉴로 돌아감
-				System.out.println("메인메뉴로 돌아갑니다.");
-				return;
-			}
-			
-			System.out.println();
-			System.out.print("비밀번호를 입력하세요 : ");
-			inputPassword = sc.next(); //비밀번호 입력 받음
-			
-			if(inputPassword.equals(new Admin().getPassword())) {
-				System.out.println("환영합니다!");
-				break;
-			}
-			
-			inputCnt++;
-			if(inputCnt < 5) {
-				System.out.println("일치하지 않습니다. 다시 입력하세요(틀린횟수 : " + inputCnt + "/5)");
-			} 
+		if(!this.accessAdmin()) {
+			return;
 		}
-		
+		System.out.println();
+		System.out.println("환영합니다!");
 		int selectMenu = 0;
 		while(true) {
 			System.out.println();
@@ -173,7 +155,8 @@ public class MainView {
 			System.out.println("1. 재고 확인");
 			System.out.println("2. 수익 확인");
 			System.out.println("3. 상품 관리");
-			System.out.println("9. 메인메뉴로");
+			System.out.println("9. 비밀번호 변경");
+			System.out.println("0. 메인메뉴로");
 			System.out.print("메뉴를 입력하세요 : ");
 			selectMenu = sc.nextInt();
 			sc.nextLine();
@@ -192,9 +175,44 @@ public class MainView {
 				break;
 				
 			case 9:
+				if(this.accessAdmin()) {
+					this.updatePassword();
+				}
+				break;
+
+			case 0:
 				System.out.println("메인메뉴로 돌아갑니다.");
 				return;
 			}
+		}
+	}
+	
+	/**
+	 * 관리자모드 접속을 위한 비밀번호 비교 메소드
+	 * @return 비밀번호가 일치하면 true, 5번 동안 일치하지 않으면 false 반환 
+	 */
+	public boolean accessAdmin() {
+		String inputPassword;
+		int inputCnt = 0;
+		
+		while(true) {
+			if(inputCnt == 5) { // 5번 틀릴 경우 메인메뉴로 돌아감
+				System.out.println("메인메뉴로 돌아갑니다.");
+				return false;
+			}
+			
+			System.out.println();
+			System.out.print("비밀번호를 입력하세요(5자리) : ");
+			inputPassword = sc.nextLine(); //비밀번호 입력 받음
+			
+			if(inputPassword.equals(admin.getPassword())) {
+				return true;
+			}
+			
+			inputCnt++;
+			if(inputCnt < 5) {
+				System.out.println("일치하지 않습니다. 다시 입력하세요(틀린횟수 : " + inputCnt + "/5)");
+			} 
 		}
 	}
 	
@@ -203,6 +221,22 @@ public class MainView {
 		for(Product p : productList) {
 			System.out.println(p);
 		}
+	}
+	
+	/**
+	 * 비밀번호 변경 메소드: 입력받은 문자열이 5글자가 아니면 다시 입력받는다.
+	 */
+	public void updatePassword() {
+		String inputPassword = null; 
+		do {
+			if(inputPassword != null) {
+				System.out.println("잘못된 입력입니다.");
+			}
+			System.out.print("변경할 비밀번호를 입력해주세요(5자리) : ");
+			inputPassword = sc.nextLine();
+		} while(inputPassword.length() != 5);
+		System.out.println("변경 완료!");
+		admin.setPassword(inputPassword);
 	}
 	
 	public void productManagerMenu() {
@@ -214,7 +248,7 @@ public class MainView {
 			System.out.println("2. 상품 삭제");			
 			System.out.println("3. 상품 재고 보충");
 			System.out.println("4. 상품 가격 변경");
-			System.out.println("9. 관리자 메인메뉴로 돌아갑니다");
+			System.out.println("0. 관리자 메인메뉴로 돌아갑니다");
 			System.out.print("메뉴를 입력하세요 : ");
 			selectMenu = sc.nextInt();
 			sc.nextLine();
@@ -237,7 +271,7 @@ public class MainView {
 				this.priceUpdate();
 				break;
 			
-			case 9:
+			case 0:
 				System.out.println("관리자 메뉴로 돌아갑니다.");
 				return;
 			}
@@ -334,6 +368,12 @@ public class MainView {
 		
 		
 	}
+
 	
+//	----응답
+	
+	public void printMessage(String message) {
+		System.out.println(message);
+	}
 }
 
