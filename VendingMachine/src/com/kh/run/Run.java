@@ -1,5 +1,9 @@
 package com.kh.run;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 import com.kh.view.MainView;
 
 public class Run {
@@ -7,6 +11,7 @@ public class Run {
 	public static void main(String[] args) {
 		
 		new MainView().mainMenu();
+		
 
 	}
 

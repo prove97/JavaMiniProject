@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="selectList">
+		SELECT * FROM PRODUCT ORDER BY PRODUCT_ID
+	</entry>
+	<entry key="buyProduct">
+		UPDATE PRODUCT SET AMOUNT = (AMOUNT-1) WHERE PRODUCT_NAME = ?
+	</entry>
+	<entry key="buyProduct">
+		UPDATE PRODUCT SET AMOUNT = (AMOUNT-1) WHERE PRODUCT_NAME = ?
+	</entry>
+	<entry key="rollbackProductAmount">
+		UPDATE PRODUCT SET AMOUNT = (AMOUNT+1) WHERE PRODUCT_NAME = ?
+	</entry>
+	<entry key="selectProduct">
+		SELECT * FROM PRODUCT WHERE PRODUCT_NAME = ?
+	</entry>
+	<entry key="addProduct">
+		INSERT INTO PRODUCT VALUES(SEQ_USERNO.NEXTVAL, ?, '음료', ?, ?)
+	</entry>
+	<entry key="deleteProduct">
+		DELETE FROM PRODUCT WHERE PRODUCT_NAME = ?
+	</entry>
+	<entry key="productRefill">
+		UPDATE PRODUCT SET AMOUNT = (AMOUNT + ?) WHERE PRODUCT_NAME = ?
+	</entry>
+	<entry key="productRefillAll">
+		UPDATE PRODUCT SET AMOUNT = (AMOUNT + ?)
+	</entry>
+	<entry key="priceUpdate">
+		UPDATE PRODUCT SET PRICE = ? WHERE PRODUCT_NAME = ?
+	</entry>
+
+</properties>
+
+

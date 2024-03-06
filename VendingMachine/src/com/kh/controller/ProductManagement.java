@@ -10,6 +10,11 @@ public class ProductManagement {
 	ProductService ps = new ProductService();
 	Product p = new Product();
 	
+	
+//	insertCash()
+//	payCash()
+	
+	
 	public ArrayList<Product> selectList() { //모든 상품 정보 출력(ArrayList로 넘기는 역할)
 		return ps.selectList();
 	}

@@ -1,10 +1,14 @@
 package com.kh.common;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 public class JDBCTemplate {
 	//모든 메소드 싹 다 static 메소드
@@ -13,8 +17,12 @@ public class JDBCTemplate {
 	//1. Connection 객체 생성(DB접속) 후 해당 Connection 객체 반환
 	public static Connection getConnection() {
 		Connection conn = null; // 연결된 DB정보를 담는 객체
+		Properties prop = new Properties();
+
 		
 		try {
+			prop.load(new FileInputStream("resources/driver.properties"));
+
 			//1) JDBC Driver 등록
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
@@ -24,6 +32,10 @@ public class JDBCTemplate {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
