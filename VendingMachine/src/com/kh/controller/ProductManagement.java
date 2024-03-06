@@ -3,15 +3,26 @@ package com.kh.controller;
 import java.util.ArrayList;
 
 import com.kh.Service.ProductService;
-import com.kh.model.dao.ProductDAO;
+import com.kh.model.vo.Customer;
 import com.kh.model.vo.Product;
+import com.kh.view.MainView;
 
 public class ProductManagement {
 	ProductService ps = new ProductService();
 	Product p = new Product();
+	Customer cust = new Customer();
+	MainView mv = new MainView();
 	
 	
-//	insertCash()
+	public void insertCash(int cash) {
+		int i = 1;
+		for(Product p : this.selectList()) {
+			System.out.printf("%d) %s(%d원)\n", i++, p.getpName(), p.getPrice());
+		}
+		mv.printMessage("금액이 부족합니다. 추가로 투입해 주세요. (현재 " + cust.getCash() + "원) : ");
+		
+		
+	}
 //	payCash()
 	
 	

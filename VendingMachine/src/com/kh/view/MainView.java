@@ -3,14 +3,17 @@ package com.kh.view;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.kh.controller.CreditcardManagement;
 import com.kh.controller.ProductManagement;
 import com.kh.model.vo.Admin;
+import com.kh.model.vo.Creditcard;
 import com.kh.model.vo.Customer;
 import com.kh.model.vo.Product;
 
 public class MainView {
 	Scanner sc = new Scanner(System.in);
 	ProductManagement pm = new ProductManagement();
+	CreditcardManagement cm = new CreditcardManagement();
 	Admin admin = new Admin();
 	Customer cust = new Customer();
 	
@@ -130,11 +133,12 @@ public class MainView {
 	
 	
 	public void payCardMenu() { // 카드결제 메뉴창 출력
-		System.out.println("아직 미구현 상태");
-
-		/*
-		 * 카드 선택 -> 
-		 */
+		for(Creditcard c : cm.cardList()) {
+			System.out.println(c);
+		}
+		System.out.println();
+		System.out.print("결제 카드 선택 : ");
+		
 	}
 	
 	

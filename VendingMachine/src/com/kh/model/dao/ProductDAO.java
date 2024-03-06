@@ -223,7 +223,7 @@ public class ProductDAO {
 		}
 		return result;
 	}
-	
+
 	
 
 	public int priceUpdate(Connection conn, String pName, int price) {
