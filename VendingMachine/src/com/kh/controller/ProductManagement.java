@@ -19,9 +19,29 @@ public class ProductManagement {
 		for(Product p : this.selectList()) {
 			System.out.printf("%d) %s(%d원)\n", i++, p.getpName(), p.getPrice());
 		}
+		
 		mv.printMessage("금액이 부족합니다. 추가로 투입해 주세요. (현재 " + cust.getCash() + "원) : ");
 		
+		boolean isHigher = false;
+		while(true) {
+			for(Product p : this.selectList()) { 
+				if(p.getPrice() <= cust.getCash()) { //각 모든 상품들의 가격과 비교, 하나라도 투입 금액보다 더 큰게 있다면 반복문 탈출
+					isHigher = true;
+					break;
+				}		
+			}
+			if(!isHigher) {
+				System.out.print("금액이 모자랍니다. 추가로 투입해 주세요(현재 "+ cust.getCash() + "원) : "); // 투입금액이 모든 상품의 가격보다 낮다면 추가로 금액을 입력받는다.
+				cust.setCash(cust.getCash() + sc.nextInt());
+				sc.nextLine();
+				continue;
+			} else break;
+		}
 		
+	}
+	
+	public int buyProduct(String pName) {
+		return ps.buyProduct(pName);
 	}
 //	payCash()
 	
@@ -30,9 +50,6 @@ public class ProductManagement {
 		return ps.selectList();
 	}
 	
-	public int buyProduct(String pName) {
-		return ps.buyProduct(pName);
-	}
 	public int rollbackProductAmount(String pName) {
 		return ps.rollbackProductAmount(pName);
 	}
