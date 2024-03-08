@@ -57,77 +57,103 @@ public class MainView {
 	
 	public void payCashMenu() { // 현금결제 메뉴창 출력
 		int i = 1;
+		int result;
 		System.out.println("===== 상품 =====");
 		for(Product p : pm.selectList()) {
 			System.out.printf("%d) %s(%d원)\n", i++, p.getpName(), p.getPrice());
+			if(i == pm.selectList().size()) {
+				i = 1; //list크기만큼 반복이 끝나면 i값 1로 초기화
+			}
 		}
 		
+		int cash;
 		System.out.println();
 		System.out.print("현금을 투입해 주세요 : ");
-		cust.setCash(sc.nextInt());
-		sc.nextLine();
-		
-		boolean isHigher = false;
 		while(true) {
-			for(Product p : pm.selectList()) { 
-				if(p.getPrice() <= cust.getCash()) { //각 모든 상품들의 가격과 비교, 하나라도 투입 금액보다 더 큰게 있다면 반복문 탈출
-					isHigher = true;
-					break;
-				}		
-			}
-			if(!isHigher) {
-				System.out.print("금액이 모자랍니다. 추가로 투입해 주세요(현재 "+ cust.getCash() + "원) : "); // 투입금액이 모든 상품의 가격보다 낮다면 추가로 금액을 입력받는다.
-				cust.setCash(cust.getCash() + sc.nextInt());
-				sc.nextLine();
+			cash = sc.nextInt();
+			sc.nextLine();
+			
+			result = pm.insertCash(cash);
+			if(result == 0) {
 				continue;
 			} else break;
 		}
 		
-		System.out.println();
-		i = 1;
-		for(Product p : pm.selectList()) {
-			if(p.getAmount() == 0 || p.getPrice() > cust.getCash()) { //투입금액보다 낮거나 재고가 없을 경우 구매불가
-				System.out.printf("%d) %s(%d원)(구매불가)\n", i++, p.getpName(), p.getPrice());
-			} else if(p.getAmount() != 0) {
-				System.out.printf("%d) %s(%d원)\n", i++, p.getpName(), p.getPrice());
-			}
-			
-		}
+		String pName = sc.nextLine();
+		pm.buyProduct(pName);
 		
-		String pName;
-		int buyP;
-		while(true) {
-			System.out.println();
-			System.out.println("현재금액 : " + cust.getCash() + "원");
-			System.out.print("구매할 상품(상품명 입력) : ");
-			pName = sc.nextLine();
-			
-			buyP = pm.buyProduct(pName);
-			
-			if(buyP == 0) {
-				System.out.println("구매 실패하였습니다. 다시 시도해주세요");
-				pm.rollbackProductAmount(pName);
-				continue;
-			}
-			
-			if(pm.selectProduct(pName).getAmount() <= 0){// 재고가 없을 시
-				System.out.println("재고가 없습니다. 다시 입력해주세요");
-				pm.rollbackProductAmount(pName);
-				continue;
-			}
-			
-			if(pm.selectProduct(pName).getPrice() > cust.getCash()) { //투입 금액보다 상품의 금액이 더 크다면
-				System.out.println("돈이 부족합니다. 다시 입력해주세요.");
-				pm.rollbackProductAmount(pName);
-				continue;
-			}		
-
-			break;
-		}
 		
-		System.out.println("구매 완료!");
-		admin.setIncome(admin.getIncome() + pm.selectProduct(pName).getPrice()); //수익 더함
-		System.out.println("거스름돈 : " + (cust.getCash() - pm.selectProduct(pName).getPrice()) + "원");
+		
+		
+		
+//		int i = 1;
+//		int result;
+//		System.out.println("===== 상품 =====");
+//		for(Product p : pm.selectList()) {
+//			System.out.printf("%d) %s(%d원)\n", i++, p.getpName(), p.getPrice());
+//		}
+//		
+//		int cash;
+//		System.out.println();
+//		System.out.print("현금을 투입해 주세요 : ");
+//		while(true) {
+//			cash = sc.nextInt();
+//			sc.nextLine();
+//			
+//			result = pm.insertCash(cash);
+//			if(result == 0) {
+//				
+//			}
+//			break;
+//		}
+//		
+//		
+//		
+//		System.out.println();
+//		i = 1;
+//		for(Product p : pm.selectList()) {
+//			if(p.getAmount() == 0 || p.getPrice() > cust.getCash()) { //투입금액보다 낮거나 재고가 없을 경우 구매불가
+//				System.out.printf("%d) %s(%d원)(구매불가)\n", i++, p.getpName(), p.getPrice());
+//			} else if(p.getAmount() != 0) {
+//				System.out.printf("%d) %s(%d원)\n", i++, p.getpName(), p.getPrice());
+//			}
+//			
+//		}
+//		
+//		String pName;
+//		int buyP;
+//		while(true) {
+//			System.out.println();
+//			System.out.println("현재금액 : " + cust.getCash() + "원");
+//			System.out.print("구매할 상품(상품명 입력) : ");
+//			pName = sc.nextLine();
+//			
+//			buyP = pm.buyProduct(pName);
+//			
+//			if(buyP == 0) {
+//				System.out.println("구매 실패하였습니다. 다시 시도해주세요");
+//				pm.rollbackProductAmount(pName);
+//				continue;
+//			}
+//			
+//			if(pm.selectProduct(pName).getAmount() <= 0){// 재고가 없을 시
+//				System.out.println("재고가 없습니다. 다시 입력해주세요");
+//				pm.rollbackProductAmount(pName);
+//				continue;
+//			}
+//			
+//			if(pm.selectProduct(pName).getPrice() > cust.getCash()) { //투입 금액보다 상품의 금액이 더 크다면
+//				System.out.println("돈이 부족합니다. 다시 입력해주세요.");
+//				pm.rollbackProductAmount(pName);
+//				continue;
+//			}		
+//
+//			break;
+//		}
+//		
+//		System.out.println("구매 완료!");
+//		admin.setIncome(admin.getIncome() + pm.selectProduct(pName).getPrice()); //수익 더함
+//		System.out.println("거스름돈 : " + (cust.getCash() - pm.selectProduct(pName).getPrice()) + "원");
 		
 	}
 	

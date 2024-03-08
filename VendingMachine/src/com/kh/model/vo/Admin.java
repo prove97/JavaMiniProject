@@ -1,6 +1,6 @@
 package com.kh.model.vo;
 
-public class Admin extends Human{
+public class Admin{
 	private String password; //관리자 모드 접속을 위한 비밀번호
 	private int income;
 	
